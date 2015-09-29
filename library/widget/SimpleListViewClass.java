@@ -23,8 +23,8 @@ public class SimpleListViewClass extends ListView{
 
 	private Activity activity;
 	private ArrayList<ForListViewData> data;
-	private GetViewInterface childViewProcess;
-	private SetIntStringArrayInterface beforeAllInterface;
+	private ChildViewListener childView;
+	private ItemClickListener beforeAllInterface;
 
 	private MyAdapter myadapter;
 
@@ -38,19 +38,19 @@ public class SimpleListViewClass extends ListView{
 	 * @param context
 	 * @param beforeAllInterface this process is used as 
 	 */
-	public SimpleListViewClass(Activity context, SetIntStringArrayInterface beforeAllInterface) {
+	public SimpleListViewClass(Activity context, ItemClickListener beforeAllInterface) {
 		super(context);
 		this.activity = context;
 		data = new ArrayList<ForListViewData>();
 		this.beforeAllInterface = beforeAllInterface;
 	}
 	
-	public void setChildView(GetViewInterface childView){
-		childViewProcess = childView;
+	public void setChildView(ChildViewListener childView){
+		this.childView = childView;
 		
 	}
 
-	public void add(String[] items, SetIntStringArrayInterface process) {
+	public void add(String[] items, ItemClickListener process) {
 		ForListViewData listViewData = new ForListViewData(items, process);
 		data.add(listViewData);
 	}
@@ -59,11 +59,11 @@ public class SimpleListViewClass extends ListView{
 	 * childView is one textView;
 	 */
 	public void setData(){
-		if(childViewProcess == null) {
-			childViewProcess = new GetViewInterface() {
+		if(childView == null) {
+			childView = new ChildViewListener() {
 				
 				@Override
-				public View setProcess() {
+				public View setView() {
 					LinearLayout linearLayout = new LinearLayout(activity);
 					linearLayout.setOrientation(LinearLayout.VERTICAL);
 					
@@ -97,9 +97,9 @@ public class SimpleListViewClass extends ListView{
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				ForListViewData selectedData = data.get(position);
 
-				if(beforeAllInterface != null) beforeAllInterface.setProcess(position, selectedData.items);
+				if(beforeAllInterface != null) beforeAllInterface.onClick(position, selectedData.items);
 				
-				if(selectedData.eachInterface != null) selectedData.eachInterface.setProcess(position, selectedData.items);
+				if(selectedData.eachInterface != null) selectedData.eachInterface.onClick(position, selectedData.items);
 //
 				if(forAllInterface != null) forAllInterface.onItemClick(parent, view, position, id);
 				
@@ -119,7 +119,7 @@ public class SimpleListViewClass extends ListView{
             ForListViewData stringData = this.getItem(position);
 
             if (convertView == null) {
-            	convertView = childViewProcess.setProcess();
+            	convertView = childView.setView();
             	
             }
 
@@ -135,12 +135,20 @@ public class SimpleListViewClass extends ListView{
 
     private class ForListViewData {
         private String[] items;
-        private SetIntStringArrayInterface eachInterface;
-        public ForListViewData(String[] text, SetIntStringArrayInterface process){
+        private ItemClickListener eachInterface;
+        public ForListViewData(String[] text, ItemClickListener process){
         	this.items = text;
         	this.eachInterface = process;
         }
 
+    }
+    
+    public interface ChildViewListener{
+    	public View setView();
+    }
+    
+    public interface ItemClickListener{
+    	public void onClick(int num, String[] textArray);
     }
 
 

@@ -2,6 +2,7 @@ package library.widget;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.DisplayMetrics;
 import android.widget.Toast;
 
 public class LibAndroidClass {
@@ -12,8 +13,6 @@ public class LibAndroidClass {
 	 */
 	public static void callActivity(Activity activity, Class<?> cls){
 		String thisClass =  ("" + cls).substring(7-1);
-//		Toast.makeText(activity, thisClass, Toast.LENGTH_SHORT).show();
-//		Toast.makeText(activity, "" + activity, Toast.LENGTH_SHORT).show();
 		if(!("" + activity).startsWith(thisClass)){
 			Intent intent = new Intent(activity, cls);
 			activity.startActivity(intent);
@@ -22,6 +21,12 @@ public class LibAndroidClass {
 		else{
 			
 		}
+	}
+	
+	public static float dpi(Activity activity){
+		DisplayMetrics metrics = new DisplayMetrics();  
+		activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);  
+		return metrics.density;
 	}
 
 }
