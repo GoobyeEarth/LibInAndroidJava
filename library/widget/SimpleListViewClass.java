@@ -24,25 +24,25 @@ public class SimpleListViewClass extends ListView{
 	private Activity activity;
 	private ArrayList<ForListViewData> data;
 	private ChildViewListener childView;
-	private ItemClickListener beforeAllInterface;
+	private ItemClickListener beforeListner;
 
 	private MyAdapter myadapter;
 
-	public SimpleListViewClass(Activity context) {
-		super(context);
-		this.activity = context;
+	public SimpleListViewClass(Activity activity) {
+		super(activity);
+		this.activity = activity;
 		data = new ArrayList<ForListViewData>();
 	}
 	/**
 	 * 
 	 * @param context
-	 * @param beforeAllInterface this process is used as 
+	 * @param beforeListner this process is used as 
 	 */
-	public SimpleListViewClass(Activity context, ItemClickListener beforeAllInterface) {
+	public SimpleListViewClass(Activity context, ItemClickListener beforeListner) {
 		super(context);
 		this.activity = context;
 		data = new ArrayList<ForListViewData>();
-		this.beforeAllInterface = beforeAllInterface;
+		this.beforeListner = beforeListner;
 	}
 	
 	public void setChildView(ChildViewListener childView){
@@ -97,13 +97,35 @@ public class SimpleListViewClass extends ListView{
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				ForListViewData selectedData = data.get(position);
 
-				if(beforeAllInterface != null) beforeAllInterface.onClick(position, selectedData.items);
+				if(beforeListner != null) beforeListner.onClick(position, selectedData.items);
 				
-				if(selectedData.eachInterface != null) selectedData.eachInterface.onClick(position, selectedData.items);
-//
+				if(selectedData.eachListner != null) selectedData.eachListner.onClick(position, selectedData.items);
+
 				if(forAllInterface != null) forAllInterface.onItemClick(parent, view, position, id);
 				
 			}
+		});
+	}
+	
+	@Override
+	public void setOnItemLongClickListener( final OnItemLongClickListener forAllInterface){
+		super.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				ForListViewData selectedData = data.get(position);
+
+				if(beforeListner != null) beforeListner.onLongClick(position, selectedData.items);
+				
+				if(selectedData.eachListner != null) selectedData.eachListner.onLongClick(position, selectedData.items);
+				
+				if(forAllInterface != null) forAllInterface.onItemLongClick(parent, view, position, id);
+				
+				
+				
+				return true;
+			}
+		
 		});
 	}
 
@@ -130,15 +152,17 @@ public class SimpleListViewClass extends ListView{
     		}
     		return convertView;
         }
+        
+       
 
 	}
 
     private class ForListViewData {
         private String[] items;
-        private ItemClickListener eachInterface;
-        public ForListViewData(String[] text, ItemClickListener process){
+        private ItemClickListener eachListner;
+        public ForListViewData(String[] text, ItemClickListener eacheListner){
         	this.items = text;
-        	this.eachInterface = process;
+        	this.eachListner = eacheListner;
         }
 
     }
@@ -149,6 +173,7 @@ public class SimpleListViewClass extends ListView{
     
     public interface ItemClickListener{
     	public void onClick(int num, String[] textArray);
+    	public void onLongClick(int num, String[] textArray);
     }
 
 

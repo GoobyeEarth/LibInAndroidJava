@@ -1,4 +1,6 @@
 package library.widget;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -109,6 +111,14 @@ public class LibJavaClass {
         }
         
 	}
+	
+	public static String date(){
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+        String strDate = sdf.format(cal.getTime());
+        return strDate;
+	}
+	
 	public static class TextData{
 		public String base;
 		public String cut;

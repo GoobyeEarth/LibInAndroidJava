@@ -1,7 +1,13 @@
 package library.widget;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.t15sep26.data.ScrapeHistoryDataClass;
+
 import android.app.Activity;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 /*
  *
@@ -31,12 +37,12 @@ public abstract class DaoAbstractClass implements DaoInterface {
 //	private static final String DATABASE_NAME = "";
 //	private static final String TABLE_NAME = "";
 //
-//	private static final String COLUMN_VIEW_ID = "viewid";
+//	private static final String COLUMN_ID = "id";
 //
-//	private static final int NUM_VIEW_ID = 0;
+//	private static final int NUM_ID = 0;
 //
 //	private static final String[] COLUMN = new String[]{
-//		COLUMN_VIEW_ID
+//		COLUMN_ID
 //	};
 //
 //	private static final int[] TYPES = new int[]{
@@ -78,7 +84,7 @@ public abstract class DaoAbstractClass implements DaoInterface {
 //	public List<DATAClass> findAll(){
 //		List<DATAClass> entityList = new ArrayList<DATAClass>();
 //
-//		Cursor cursor = db.query(tableName, column, null, null, null, null, COLUMN_VIEW_ID);
+//		Cursor cursor = db.query(TABLE_NAME, column, null, null, null, null, COLUMN_ID);
 //
 //		while (cursor.moveToNext()) {
 //			entityList.add(getDataClass(cursor) );
@@ -94,8 +100,8 @@ public abstract class DaoAbstractClass implements DaoInterface {
 //	 * @return
 //	 */
 //	public DATAClass findById(int rowId){
-//		String selection = COLUMN_VIEW_ID + "=" + rowId;
-//		Cursor cursor = db.query(tableName, column, selection, null, null,
+//		String selection = COLUMN_ID + "=" + rowId;
+//		Cursor cursor = db.query(TABLE_NAME, column, selection, null, null,
 //				null, null);
 //
 //		/*
@@ -114,7 +120,7 @@ public abstract class DaoAbstractClass implements DaoInterface {
 //
 //	private DATAClass getDataClass(Cursor cursor){
 //		DATAClass entity = new DATAClass();
-//		entity.id = cursor.getInt(NUM_VIEW_ID);
+//		entity.id = cursor.getInt(NUM_ID);
 //		entity.data = cursor.getString(NUM_DATA);
 //
 //
@@ -129,7 +135,7 @@ public abstract class DaoAbstractClass implements DaoInterface {
 //	 */
 //	public long insert(DATAClass entity){
 //
-//		db.insert(tableName, null, getValues(entity) );
+//		db.insert(TABLE_NAME, null, getValues(entity) );
 //		return entity.id;
 //	}
 //	
@@ -153,14 +159,14 @@ public abstract class DaoAbstractClass implements DaoInterface {
 //	 * @return
 //	 */
 //	public int update(DATAClass entity) {
-//		String whereClause = COLUMN_VIEW_ID + "=" + entity.id;
-//		return db.update(tableName, getValues(entity), whereClause, null);
+//		String whereClause = COLUMN_ID + "=" + entity.id;
+//		return db.update(TABLE_NAME, getValues(entity), whereClause, null);
 //	}
 //
 //	private ContentValues getValues(DATAClass entity){
 //		ContentValues values = new ContentValues();
 //
-//		values.put(COLUMN_VIEW_ID, entity.id);
+//		values.put(COLUMN_ID, entity.id);
 //		values.put(COLUMN_DATA, entity.data);
 //
 //		return values;
@@ -174,8 +180,8 @@ public abstract class DaoAbstractClass implements DaoInterface {
 //	 * @return
 //	 */
 //	public int delete(int id) {
-//		String whereClause = COLUMN_VIEW_ID + "=" + id;
-//		return db.delete(tableName, whereClause, null);
+//		String whereClause = COLUMN_ID + "=" + id;
+//		return db.delete(TABLE_NAME, whereClause, null);
 //	}
 //
 //
@@ -184,7 +190,7 @@ public abstract class DaoAbstractClass implements DaoInterface {
 //	 * @return
 //	 */
 //   public long getRecordCount() {
-//       String sql = "select count(*) from " + tableName;
+//       String sql = "select count(*) from " + TABLE_NAME;
 //       Cursor c = db.rawQuery(sql, null);
 //       c.moveToLast();
 //       long count = c.getLong(0);
@@ -198,9 +204,9 @@ public abstract class DaoAbstractClass implements DaoInterface {
 //	 * @return
 //	 */
 //	public List<DATAClass> getDatasByViewId(int id){
-//		String selection = COLUMN_VIEW_ID + "=" + id;
+//		String selection = COLUMN_ID + "=" + id;
 //		List<DATAClass> entityList = new ArrayList<DATAClass>();
-//		Cursor cursor = db.query(tableName, column, selection, null, null,
+//		Cursor cursor = db.query(TABLE_NAME, column, selection, null, null,
 //				null, null);
 //
 //		while (cursor.moveToNext()) {
@@ -209,9 +215,53 @@ public abstract class DaoAbstractClass implements DaoInterface {
 //
 //		return entityList;
 //	}
-
+//	
+//	/**
+//	 * 特定のidのデータを取得
+//	 * @param id
+//	 * @return
+//	 */
+//	public List<DATAClass> getDatasByIdOrder(int id, String orderBy){
+//		String selection = COLUMN_ID + "=" + id;
+//		List<DATAClass> entityList = new ArrayList<DATAClass>();
+//		Cursor cursor = db.query(TABLE_NAME, column, selection, null, null,
+//				null, orderBy);
+//
+//		while (cursor.moveToNext()) {
+//			entityList.add(getDataClass(cursor) );
+//		}
+//
+//		return entityList;
+//	}
+//	
+//	/**
+//	 * 特定のidのデータを取得
+//	 * @param id
+//	 * @return
+//	 */
+//	public DATAClass getDataByIdOrder(int id, String orderBy, int order){
+//		String selection = COLUMN_ID + "=" + id;
+//		
+//		Cursor cursor = db.query(TABLE_NAME, column, selection, null, null, null, orderBy);
+//		
+//		boolean isData = false
+//				;
+//		for(int i = 0; i < order; i++) {
+//			isData = cursor.moveToNext();
+//		}
+//		
+//		if(isData){
+//			return getDataClass(cursor);
+//		}
+//		else{
+//			DATAClass history = new DATAClass();
+//			history.id = -1;
+//			return history;
+//		}
+//		
+//	}
 	
-
+	
 	protected boolean toBoolean(int trueOrFalse){
 		if(trueOrFalse == 1) return true;
 		else return false;
