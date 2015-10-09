@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import library.my_interface.GetStringSetStringInterface;
 
 public class LibJavaClass {
 	/**
@@ -124,6 +123,10 @@ public class LibJavaClass {
 		public String cut;
 		
 		
+	}
+	
+	public interface GetStringSetStringInterface{
+		public String setProcess(String str);
 	}
 	
 }

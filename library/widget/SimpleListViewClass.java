@@ -1,18 +1,19 @@
 package library.widget;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import library.my_interface.*;
 
 /**
  * this SimpleListViewClass is only used as ListView whose child view is TextView;
@@ -21,18 +22,19 @@ import library.my_interface.*;
  */
 public class SimpleListViewClass extends ListView{
 
-	private Activity activity;
-	private ArrayList<ForListViewData> data;
-	private ChildViewListener childView;
-	private ItemClickListener beforeListner;
+	protected Activity activity;
+	protected ChildViewListener childView;
+	protected ItemClickListener beforeListner;
+	protected MyAdapter adapter;
 
-	private MyAdapter myadapter;
 
 	public SimpleListViewClass(Activity activity) {
 		super(activity);
 		this.activity = activity;
-		data = new ArrayList<ForListViewData>();
+		ArrayList<ForListViewData> data = new ArrayList<ForListViewData>();
+		adapter = new MyAdapter(activity, data);
 	}
+	
 	/**
 	 * 
 	 * @param context
@@ -41,7 +43,8 @@ public class SimpleListViewClass extends ListView{
 	public SimpleListViewClass(Activity context, ItemClickListener beforeListner) {
 		super(context);
 		this.activity = context;
-		data = new ArrayList<ForListViewData>();
+		ArrayList<ForListViewData> data = new ArrayList<ForListViewData>();
+		adapter = new MyAdapter(activity, data);
 		this.beforeListner = beforeListner;
 	}
 	
@@ -52,8 +55,17 @@ public class SimpleListViewClass extends ListView{
 
 	public void add(String[] items, ItemClickListener process) {
 		ForListViewData listViewData = new ForListViewData(items, process);
-		data.add(listViewData);
+		adapter.add(listViewData);
 	}
+	
+	public void remove(int position){
+		adapter.remove(position);
+	}
+	
+	public void reomoveAll(){
+		adapter.removeAll();
+	}
+	
 	/**
 	 * if you don't use setChildView,
 	 * childView is one textView;
@@ -82,10 +94,11 @@ public class SimpleListViewClass extends ListView{
 				}
 			};
 		}
-		myadapter = new MyAdapter(activity, data);
-		setAdapter(myadapter);
+		
+		setAdapter(adapter);
 		
 	}
+	
 	
 	
 	@Override
@@ -95,11 +108,11 @@ public class SimpleListViewClass extends ListView{
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				ForListViewData selectedData = data.get(position);
+				ForListViewData selectedData = adapter.getItem(position);
 
-				if(beforeListner != null) beforeListner.onClick(position, selectedData.items);
+				if(beforeListner != null) beforeListner.onClick(position, selectedData.items, view);
 				
-				if(selectedData.eachListner != null) selectedData.eachListner.onClick(position, selectedData.items);
+				if(selectedData.eachListner != null) selectedData.eachListner.onClick(position, selectedData.items, view);
 
 				if(forAllInterface != null) forAllInterface.onItemClick(parent, view, position, id);
 				
@@ -113,7 +126,7 @@ public class SimpleListViewClass extends ListView{
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				ForListViewData selectedData = data.get(position);
+				ForListViewData selectedData = adapter.getItem(position);
 
 				if(beforeListner != null) beforeListner.onLongClick(position, selectedData.items);
 				
@@ -130,12 +143,10 @@ public class SimpleListViewClass extends ListView{
 	}
 
 	private class MyAdapter extends ArrayAdapter<ForListViewData>{
-
         public MyAdapter(Activity context, ArrayList<ForListViewData> objects) {
             super(context, 0, objects);
         }
-
-
+        
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ForListViewData stringData = this.getItem(position);
@@ -153,10 +164,24 @@ public class SimpleListViewClass extends ListView{
     		return convertView;
         }
         
+        public void remove(int position){
+        	ForListViewData data = getItem(position);
+        	remove(data);
+        }
+        
+        public void removeAll(){
+        	while(true){
+        		try{
+            		remove(0);
+            	}
+            	catch(Exception e){
+            		return ;
+            	}
+        	}
+        }
        
-
 	}
-
+	
     private class ForListViewData {
         private String[] items;
         private ItemClickListener eachListner;
@@ -167,15 +192,19 @@ public class SimpleListViewClass extends ListView{
 
     }
     
+    
     public interface ChildViewListener{
     	public View setView();
     }
     
     public interface ItemClickListener{
-    	public void onClick(int num, String[] textArray);
     	public void onLongClick(int num, String[] textArray);
+    	public void onClick(int num, String[] textArray, View view);
     }
-
+    
+    @Deprecated
+	@Override
+    public void setOnClickListener(OnClickListener l) {}
 
 }
 

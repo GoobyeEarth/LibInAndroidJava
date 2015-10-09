@@ -116,7 +116,7 @@ public class DrawerLayoutUpperActivityClass extends Activity{
 
 	protected void setSideView(View view){
 		DrawerLayout.LayoutParams params = new DrawerLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT,
+				LayoutParams.MATCH_PARENT,
 				LayoutParams.MATCH_PARENT);
 		params.gravity = Gravity.START;
 
@@ -144,13 +144,9 @@ public class DrawerLayoutUpperActivityClass extends Activity{
 
 	    return super.onOptionsItemSelected(item);
 	}
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-    	if(keyCode != KeyEvent.KEYCODE_BACK){
-    		return super.onKeyDown(keyCode, event);
-    	}else{
-
-    		return false;
-    	}
-    }
+	
+	public void close(View view){
+		drawerLayout.closeDrawer(view);
+	}
 
 }
