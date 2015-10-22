@@ -7,8 +7,16 @@ public interface DaoInterface {
 	public static final int TYPE_BOOLEAN = 3;
 	public static final int TYPE_LONG = 4;
 	public static final int TYPE_FLOAT = 5;
+	
+	/**
+	 * integer primary key
+	 */
 	public static final int TYPE_PRIMARY = 6;
-
+	
+	/**
+	 * unique string not not implemented
+	 */
+	public static final int TYPE_STRING_UNIQUE = 7;
 	/*
 	 * DATABASE_NAME
 	 */

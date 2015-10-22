@@ -2,9 +2,11 @@ package library.widget;
 
 import com.example.t15sep26.R;
 
+import android.R.color;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
@@ -28,8 +30,8 @@ import android.widget.TextView;
  */
 public class DrawerLayoutUpperActivityClass extends Activity{
 
-	private DrawerLayout drawerLayout;
-	private ActionBarDrawerToggle actionBarDrawerToggle;
+	protected DrawerLayout drawerLayout;
+	protected ActionBarDrawerToggle actionBarDrawerToggle;
 	protected int theme = android.R.style.Theme_Holo_Light;
 	protected int sideIcon = R.drawable.abc_ab_share_pack_mtrl_alpha;
 	private InputMethodManager inputMethodManager;
@@ -47,8 +49,8 @@ public class DrawerLayoutUpperActivityClass extends Activity{
 		setTheme(theme);
 		drawerLayout = new DrawerLayout(this);
 		
-//		drawerLayout.setFocusableInTouchMode(true);
-//		drawerLayout.setFocusable(true);
+		drawerLayout.setFocusableInTouchMode(true);
+		drawerLayout.setFocusable(true);
 		
 		setContentView(drawerLayout);
 
@@ -80,12 +82,9 @@ public class DrawerLayoutUpperActivityClass extends Activity{
 	    getActionBar().setDisplayHomeAsUpEnabled(true);
 	    // UpNavigationを有効に
 	    getActionBar().setHomeButtonEnabled(true);
-
-
-
-
-
+	    
 	}
+	
 
 	protected void setMainView(View view){
 		drawerLayout.addView(view);
@@ -119,7 +118,6 @@ public class DrawerLayoutUpperActivityClass extends Activity{
 				LayoutParams.MATCH_PARENT,
 				LayoutParams.MATCH_PARENT);
 		params.gravity = Gravity.START;
-
 		drawerLayout.addView(view, params);
 	}
 

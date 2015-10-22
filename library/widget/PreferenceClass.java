@@ -21,10 +21,44 @@ public class PreferenceClass {
 		return pref.getString(stringKey(key), "");
 	}
 	
+	public void saveInt(String key, int data){
+		Editor editor = pref.edit();
+        editor.putInt(intKey(key), data );
+        editor.commit();
+	}
+	
+	public int loadInt(String key){
+		return pref.getInt(intKey(key), -1);
+	}
+	
+	public void saveLong(String key, long data){
+		Editor editor = pref.edit();
+        editor.putLong(longKey(key), data );
+        editor.commit();
+	}
+	
+	public long loadLong(String key){
+		return pref.getLong(longKey(key), -1);
+	}
+	
+	public void saveBoolean(String key, boolean data){
+		Editor editor = pref.edit();
+        editor.putBoolean(booleanKey(key), data );
+        editor.commit();
+	}
+	
+	public boolean loadBoolean(String key){
+		return pref.getBoolean(booleanKey(key), false);
+	}
+	
 /////////////////////////////key//////////////////////////////////////////////////
 
 private String intKey(String key){
 return "Int_" + key;
+}
+
+private String longKey(String key){
+return "Long_" + key;
 }
 
 private String floatKey(String key){

@@ -118,11 +118,70 @@ public class LibJavaClass {
         return strDate;
 	}
 	
+	public static class TimeAsSec{
+		public static int timeToSec(int hour, int min, int second){
+			int sec = timeToSecRow(hour, min, second);
+			return sec;
+		}
+		
+		private static int timeToSecRow(int hour, int min, int second){
+			min += hour * 60;
+			second += min * 60;
+			return second;
+		}
+		
+		public static int timeToInDay(int sec){
+			if(sec < 0) sec = 0;
+			
+			if(timeToSecRow(24, 0, 0) <= sec){
+				sec = sec - timeToSecRow(24, 0, 0);
+			}
+			
+			return sec;
+		}
+		
+		public static Result secToTime(int sec){
+			
+			Result result = new Result();
+			
+			result.hour = sec / (60 * 60);
+			result.min = (sec % (60 * 60) ) / 60;
+			result.second = (sec % (60 * 60) ) % 60;
+			
+			return result;
+			
+		}
+		
+		public static class Result{
+			public int hour;
+			public int min;
+			public int second;
+			public int timeToSec(){
+				int sec = TimeAsSec.timeToSec(hour, min, second);
+				return sec;
+			}
+			
+			public void timeToInDay(){
+				if(hour == 24) hour = 0;
+			}
+			
+			public Result(){
+				
+			}
+			
+			public Result(int sec){
+				Result result = secToTime(sec);
+				hour = result.hour;
+				min = result.min;
+				second = result.second;
+				
+			}
+		}
+	}
+	
 	public static class TextData{
 		public String base;
 		public String cut;
-		
-		
 	}
 	
 	public interface GetStringSetStringInterface{

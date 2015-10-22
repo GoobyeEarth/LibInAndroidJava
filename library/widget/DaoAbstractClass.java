@@ -7,8 +7,10 @@ import java.util.List;
 import com.example.t15sep26.data.ScrapeHistoryDataClass;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import library.widget.MyDBHelperClass.InitalSqlListener;
 /*
  *
  * Daoclassを導入する場合これらをコピペ、編集すること。
@@ -22,7 +24,6 @@ import android.database.sqlite.SQLiteDatabase;
 public abstract class DaoAbstractClass implements DaoInterface {
 
 	protected SQLiteDatabase db;
-	protected Activity activity;
 
 	protected String dataBaseName;
 	protected String tableName;
@@ -48,27 +49,40 @@ public abstract class DaoAbstractClass implements DaoInterface {
 //	private static final int[] TYPES = new int[]{
 //		TYPE_INT
 //	};
-
+	
 	/**
-	 * @param activity
-	 * @param dataBaseName
-	 * @param tableName
-	 * @param column
-	 * @param types
+	 * this is before constraction
 	 */
-	public DaoAbstractClass(Activity activity, String dataBaseName, String tableName, String[] column, int[] types){
-		this.activity = activity;
-
+	public DaoAbstractClass(){
+		
+	}
+	
+	protected void setInitialProcess(Context context, String dataBaseName, String tableName, String[] column, int[] types, InitalSqlListener initial){
 		this.dataBaseName = dataBaseName;
 		this.tableName = tableName;
 		this.column = column;
 		this.types = types;
 
-		MyDBHelperClass mainHelper = new MyDBHelperClass(activity, dataBaseName, null, 1);
+		MyDBHelperClass mainHelper = new MyDBHelperClass(context, dataBaseName, null, 1);
 		db = mainHelper.getReadableDatabase();
-		mainHelper.createTable(db, tableName, column, types);
+		mainHelper.createTable(db, tableName, column, types, initial);
+	}
+	
+	private void Constracta(Context context, String dataBaseName, String tableName, String[] column, int[] types){
+		this.dataBaseName = dataBaseName;
+		this.tableName = tableName;
+		this.column = column;
+		this.types = types;
 
+		MyDBHelperClass mainHelper = new MyDBHelperClass(context, dataBaseName, null, 1);
+		db = mainHelper.getReadableDatabase();
+		mainHelper.createTable(db, tableName, column, types, null);
+	}
+	
+	public DaoAbstractClass(Context context, String dataBaseName, String tableName, String[] column, int[] types){
 
+		Constracta(context, dataBaseName, tableName, column, types);
+		
 	}
 
 	/**
@@ -260,7 +274,20 @@ public abstract class DaoAbstractClass implements DaoInterface {
 //		}
 //		
 //	}
-	
+//	
+//	public boolean getEntityExists(String column, String sig, String right){
+//		  String sql = "select count(*) from " + TABLE_NAME + " WHERE " + column + sig + "'" + right + "'"; 
+//	      Cursor c = db.rawQuery(sql, null);
+//	      c.moveToLast();
+//	      long count = c.getLong(0);
+//	      c.close();
+//	      if(count >= 1){
+//	    	  return true;
+//	      }
+//	      else{
+//	    	  return false;
+//	      }
+//	  }
 	
 	protected boolean toBoolean(int trueOrFalse){
 		if(trueOrFalse == 1) return true;

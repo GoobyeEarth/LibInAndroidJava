@@ -26,7 +26,7 @@ public class MyDBHelperClass extends SQLiteOpenHelper implements DaoInterface{
             super(context, dbName, factory, version);
     }
     
-    public void createTable(SQLiteDatabase db, String tableName, String[] columns, int[] types){
+    public void createTable(SQLiteDatabase db, String tableName, String[] columns, int[] types, InitalSqlListener initial){
     	
     	if(tableExists(db, tableName) == false ){
         	String sentence = "";
@@ -39,9 +39,15 @@ public class MyDBHelperClass extends SQLiteOpenHelper implements DaoInterface{
         	
         	sentence = sentence + ")";
         	db.execSQL(sentence);
+        	
+        	if(initial != null) initial.initalProcess();
     	}
     	
     }
+    
+    
+    
+    
     
     private boolean tableExists(SQLiteDatabase db, String tableName){
     	String query = "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='" + tableName +  "';"; 
@@ -113,5 +119,8 @@ public class MyDBHelperClass extends SQLiteOpenHelper implements DaoInterface{
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
-
+    
+    public interface InitalSqlListener{
+    	public void initalProcess();
+    }
 }

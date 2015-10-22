@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 
 public class ListDialogClass {
@@ -14,6 +15,7 @@ public class ListDialogClass {
 	private List<ClickListener> itemFuncList;
 	private String title="";
 	private ClickListener interfaceForward = null;
+	private Builder listDlg;
 
 
 	public ListDialogClass(Activity activity){
@@ -39,7 +41,7 @@ public class ListDialogClass {
 	 */
 	public void show(final ClickListener interfaceBackward){
 
-        AlertDialog.Builder listDlg = new AlertDialog.Builder(activity);
+		listDlg = new AlertDialog.Builder(activity);
         
         listDlg.setTitle(title);
         listDlg.setItems(
@@ -53,12 +55,15 @@ public class ListDialogClass {
             });
         listDlg.create().show();
     }
-
+	
+	
+	
 
 	public void addItem(String item, ClickListener itemSelectInterface){
 		itemList.add(item);
 		itemFuncList.add(itemSelectInterface);
 	}
+	
 	
 	
 	public void setTitle(String title){
