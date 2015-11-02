@@ -118,6 +118,17 @@ public class LibJavaClass {
         return strDate;
 	}
 	
+	public static long max(long[] data){
+		long max = data[0];
+		for(int i = 1; i < data.length; i++) {
+			if(max < data[i]){
+				max = data[i];
+			}
+		}
+		return max;
+		
+	}
+	
 	public static class TimeAsSec{
 		public static int timeToSec(int hour, int min, int second){
 			int sec = timeToSecRow(hour, min, second);

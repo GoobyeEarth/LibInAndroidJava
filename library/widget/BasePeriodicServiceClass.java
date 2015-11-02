@@ -116,8 +116,7 @@ public abstract class BasePeriodicServiceClass extends Service{
             now + getIntervalMS(),
             alarmSender
         );
-        // 次回登録が完了
-
+        
     }
 
 

@@ -4,12 +4,11 @@ package library.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.t15sep26.data.ScrapeHistoryDataClass;
-
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import jp.newspage.scraper.data.ScrapeHistoryDataClass;
 import library.widget.MyDBHelperClass.InitalSqlListener;
 /*
  *

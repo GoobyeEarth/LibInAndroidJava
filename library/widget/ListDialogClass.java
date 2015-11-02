@@ -53,6 +53,7 @@ public class ListDialogClass {
 					if(interfaceBackward != null) interfaceBackward.setProcess(which, itemList.get(which));
 				}
             });
+        
         listDlg.create().show();
     }
 	

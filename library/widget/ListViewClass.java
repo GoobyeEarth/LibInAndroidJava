@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,17 +23,17 @@ import android.widget.Toast;
  */
 public class ListViewClass extends ListView{
 
-	protected Activity activity;
+	protected Context context;
 	protected ChildViewListener childView;
 	protected ItemClickListener beforeListner;
 	protected MyAdapter adapter;
 
 
-	public ListViewClass(Activity activity) {
-		super(activity);
-		this.activity = activity;
+	public ListViewClass(Context context) {
+		super(context);
+		this.context = context;
 		ArrayList<ForListViewData> data = new ArrayList<ForListViewData>();
-		adapter = new MyAdapter(activity, data);
+		adapter = new MyAdapter(context, data);
 	}
 	
 	/**
@@ -40,11 +41,11 @@ public class ListViewClass extends ListView{
 	 * @param context
 	 * @param beforeListner this process is used as 
 	 */
-	public ListViewClass(Activity context, ItemClickListener beforeListner) {
+	public ListViewClass(Context context, ItemClickListener beforeListner) {
 		super(context);
-		this.activity = context;
+		this.context = context;
 		ArrayList<ForListViewData> data = new ArrayList<ForListViewData>();
-		adapter = new MyAdapter(activity, data);
+		adapter = new MyAdapter(context, data);
 		this.beforeListner = beforeListner;
 	}
 	
@@ -76,11 +77,11 @@ public class ListViewClass extends ListView{
 				
 				@Override
 				public View setView(int position, View convertView) {
-					LinearLayout linearLayout = new LinearLayout(activity);
+					LinearLayout linearLayout = new LinearLayout(context);
 					linearLayout.setOrientation(LinearLayout.VERTICAL);
 					
 					
-					TextView textView = new TextView(activity);
+					TextView textView = new TextView(context);
 					linearLayout.addView(textView);
 					textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
 					int padding = 25;
@@ -149,7 +150,7 @@ public class ListViewClass extends ListView{
 	}
 
 	private class MyAdapter extends ArrayAdapter<ForListViewData>{
-        public MyAdapter(Activity context, ArrayList<ForListViewData> objects) {
+        public MyAdapter(Context context, ArrayList<ForListViewData> objects) {
             super(context, 0, objects);
         }
         

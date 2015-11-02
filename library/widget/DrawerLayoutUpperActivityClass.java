@@ -1,6 +1,6 @@
 package library.widget;
 
-import com.example.t15sep26.R;
+import com.newspage.scraper.R;
 
 import android.R.color;
 import android.app.Activity;
