@@ -83,11 +83,13 @@ public abstract class BasePeriodicServiceClass extends Service{
         // @see http://d.hatena.ne.jp/rso/20110911
 
         int semantics = super.onStartCommand(intent, flags, startId);
-
+        
         // タスクを実行
         activeService = this;
-        execTask();
         makeNextPlan();
+        execTask();
+        
+        
         
 		return semantics;
 

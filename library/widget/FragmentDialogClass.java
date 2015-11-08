@@ -13,21 +13,21 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.view.View;
 
-public class FragmentDialogUpperClass extends DialogFragment{
+public class FragmentDialogClass extends DialogFragment{
 	protected String title;
 	protected View view;
 	private boolean okButtonExists = false;
 	private boolean titleExists = false;
 	private Activity activity;
 	private OnClickListener okClick;
-	public FragmentDialogUpperClass(String title, View view, Activity activity) {
+	public FragmentDialogClass(String title, View view, Activity activity) {
 		super();
 		this.title = title;
 		this.view = view;
 		this.activity = activity;
 		titleExists = true;
 	}
-	public FragmentDialogUpperClass(View view, Activity activity) {
+	public FragmentDialogClass(View view, Activity activity) {
 		super();
 		this.view = view;
 		this.activity = activity;

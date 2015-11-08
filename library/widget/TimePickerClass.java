@@ -10,7 +10,7 @@ public class TimePickerClass {
 	private NumberPickerClass hourPicker;
 	private NumberPickerClass minPicker;
 	private NumberPickerClass secondPicker;
-	private FragmentDialogUpperClass dialog;
+	private FragmentDialogClass dialog;
 
 	public TimePickerClass(Activity activity, int hour , int min, int second){
 		Constracta(activity, hour, min, second, 23);	
@@ -48,7 +48,7 @@ public class TimePickerClass {
 		linearLayout.addView(secondPicker, secondLP);
 		secondPicker.setValue(second);
 		
-		dialog= new FragmentDialogUpperClass(linearLayout, activity);
+		dialog= new FragmentDialogClass(linearLayout, activity);
 	}
 	
 	private LayoutParams hoge(){

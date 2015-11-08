@@ -3,6 +3,7 @@ package library.widget;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.DisplayMetrics;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class LibAndroidClass {
@@ -27,6 +28,13 @@ public class LibAndroidClass {
 		DisplayMetrics metrics = new DisplayMetrics();  
 		activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);  
 		return metrics.density;
+	}
+	
+	public static void textDialog(String text , Activity activity){
+		TextView hogetext = new TextView(activity);
+		FragmentDialogClass hogeFrg = new FragmentDialogClass(hogetext, activity) ;
+		hogeFrg.show("textDialog");
+		hogetext.setText(text);
 	}
 
 }

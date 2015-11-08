@@ -67,6 +67,15 @@ public class ListViewClass extends ListView{
 		adapter.removeAll();
 	}
 	
+	public void update(int position, String[] items, ItemClickListener process){
+		adapter.remove(position);
+		ForListViewData data = new ForListViewData(items, process);
+		
+		Toast.makeText(context, "" + position + " , " + adapter.getCount(), Toast.LENGTH_SHORT).show();
+		adapter.insert(data, position);
+		setData();
+		
+	}
 	/**
 	 * if you don't use setChildView,
 	 * childView is one textView;
@@ -216,6 +225,7 @@ public class ListViewClass extends ListView{
     public interface ItemClickListener{
     	public void onLongClick(int num, String[] textArray);
     	public void onClick(int num, String[] textArray, View view);
+    	
     }
     
     @Deprecated
