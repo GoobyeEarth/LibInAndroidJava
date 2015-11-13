@@ -1,15 +1,24 @@
 package library.widget;
+
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FileClass {
+	
+	public static String[][] loadAsCsv(String filename){
+		String[] row = load(filename);
+		String[][] result = new String[row.length][];
+		for(int i = 0; i < row.length; i++) {
+			result[i] = row[i].split(",");
+		}
+		return result;
+	}
 
 	public static String[] load(String filename) {
 		ArrayList<String> data = new ArrayList<String>();
@@ -33,27 +42,45 @@ public class FileClass {
 		return data.toArray(new String[0]);
 	}
 	
-	public static boolean save(String filename, String data){
-		 try {
-	            //出力先を作成する
-	            FileWriter fw = new FileWriter("filename", false);  //※１
-	            PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
-
-	            //内容を指定する
-	            pw.println(data);
-	           
-
-	            //ファイルに書き出す
-	            pw.close();
-
-	            //終了メッセージを画面に出力する
-	            System.out.println("出力が完了しました。");
-
-	        } catch (IOException ex) {
-	            //例外時処理
-	            ex.printStackTrace();
-	        }
-		return true;
+	public static void save(String[] data, String filename){
+		try{
+			  File file = new File(filename);
+			  FileWriter filewriter = new FileWriter(file);
+			  
+			  for (String string : data) {
+				filewriter.append(string + "\n");
+			  }
+			  filewriter.close();
+			}catch(IOException e){
+			  System.out.println(e);
+			}
+	}
+	
+	public static void append(String[] data, String filename){
+		try{
+			  File file = new File(filename);
+			  FileWriter filewriter = new FileWriter(file, true);
+			  
+			  for (String string : data) {
+				filewriter.append(string + "\n");
+			  }
+			  filewriter.close();
+			}catch(IOException e){
+			  System.out.println(e);
+			}
+	}
+	
+	public static void saveAsCsv(String[][] data, String filename){
+		String[] newLine = new String[data.length];
+		for(int lineNum = 0; lineNum < data.length; lineNum++) {
+			newLine[lineNum] = "";
+			if(1 <= data[lineNum].length) newLine[lineNum] = data[lineNum][0];
+			for(int columnNum = 1; columnNum < data[lineNum].length; columnNum++) {
+				newLine[lineNum] += "," + data[lineNum][columnNum];
+			}
+		}
+		save(newLine, filename);
+		
 	}
 	
 }

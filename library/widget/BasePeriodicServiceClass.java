@@ -91,7 +91,7 @@ public abstract class BasePeriodicServiceClass extends Service{
         
         
         
-		return semantics;
+		return Service.START_STICKY;
 
         // NOTE: ここで次回の実行計画を逐次的にコールしていない理由は，
         // タスクが非同期の場合があるから。
